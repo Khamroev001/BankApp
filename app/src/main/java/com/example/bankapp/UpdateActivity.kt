@@ -11,13 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,15 +28,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.android.volley.toolbox.ImageRequest
 import com.example.bankapp.ui.theme.BankAppTheme
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalMaterial3Api::class)
-class AddBankActivity : ComponentActivity() {
+class UpdateActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -48,15 +45,17 @@ class AddBankActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
                     val database= Firebase.database
                     val myRef=database.reference
 
-                    var bank_name =remember {
+                    var bank_name = remember {
                         mutableStateOf("")
                     }
-                    var bank_rating =remember {
+                    var bank_rating = remember {
                         mutableStateOf(6.5)
                     }
+
 
                     Column(
                         modifier = Modifier
@@ -105,15 +104,15 @@ class AddBankActivity : ComponentActivity() {
                         Button(
                             onClick = {
 
-                    val bank=Bank(name = bank_name.value.toString(), rating = bank_rating.value.toInt())
-                    myRef.child("banks")
-                        .setValue(bank)
-                        .addOnSuccessListener {
-                            val i= Intent(this@AddBankActivity, MainActivity::class.java)
-                            startActivity(i)
-                        }
+                                val bank=Bank(name = bank_name.value.toString(), rating = bank_rating.value.toInt())
+                                myRef.child("banks")
+                                    .setValue(bank)
+                                    .addOnSuccessListener {
+                                        val i= Intent(this@UpdateActivity, MainActivity::class.java)
+                                        startActivity(i)
+                                    }
 
-                                  },
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp)
@@ -121,14 +120,14 @@ class AddBankActivity : ComponentActivity() {
                         ) {
                             Icon(imageVector = Icons.Default.Add, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Save")
+                            Text("Update")
                         }
 
                         // Logout Button
                         Button(
                             onClick = {
-                               onBackPressed()
-                                 },
+                                onBackPressed()
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp)
@@ -139,7 +138,14 @@ class AddBankActivity : ComponentActivity() {
                             Text("Back")
                         }
 
-                }
+                    }
+
+
+
+
+
+
+
                 }
             }
         }
